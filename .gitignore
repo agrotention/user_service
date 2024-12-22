@@ -1,2 +1,10 @@
 dist/
 .env
+
+# Editor
+.vscode/
+.idea/
+.zed/
+
+*.log
+*.logs
