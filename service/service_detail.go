@@ -10,6 +10,6 @@ func (s *server) UserDetail(
 	ctx context.Context,
 	req *user_proto.InUserDetail,
 ) (*user_proto.OutUserDetail, error) {
-
-	return nil, nil
+	// TODO Create UserDetail service
+	panic("unimplemented!")
 }

@@ -10,6 +10,6 @@ func (s *server) UserList(
 	ctx context.Context,
 	req *user_proto.InUserList,
 ) (*user_proto.OutUserList, error) {
-
-	return nil, nil
+	// TODO Create UserList service
+	panic("unimplemented!")
 }

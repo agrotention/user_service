@@ -10,6 +10,6 @@ func (s *server) UserLogin(
 	ctx context.Context,
 	req *user_proto.InUserLogin,
 ) (*user_proto.OutUserLogin, error) {
-
-	return nil, nil
+	// TODO Create UserLogin service
+	panic("unimplemented!")
 }

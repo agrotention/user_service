@@ -10,6 +10,6 @@ func (s *server) UserUpdate(
 	ctx context.Context,
 	req *user_proto.InUserUpdate,
 ) (*user_proto.OutUserUpdate, error) {
-
-	return nil, nil
+	// TODO Create UserUpdate service
+	panic("unimplemented!")
 }
