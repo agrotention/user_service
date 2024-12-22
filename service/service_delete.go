@@ -24,7 +24,7 @@ func (s *server) UserDelete(
 	}
 
 	// Query
-	if err := s.db.Where("id = ?", req.GetId()).Delete(&db.User{}).Error; err != nil {
+	if err := s.db.Unscoped().Where("id = ?", req.GetId()).Delete(&db.User{}).Error; err != nil {
 		return nil, helper.NewServiceError(500, "internal error", err)
 	}
 
