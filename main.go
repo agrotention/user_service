@@ -14,9 +14,15 @@ import (
 )
 
 func main() {
-
+	// Constants
 	dbUri := os.Getenv("DB_URI")
+	if dbUri == "" {
+		log.Fatalln("error running server, DB_URI variable not set")
+	}
 	addr := os.Getenv("SERVICE_ADDRESS")
+	if addr == "" {
+		log.Fatalln("error running server, SERVICE_ADDRESS variable not set")
+	}
 
 	// Init database
 	db, err := gorm.Open(postgres.Open(dbUri))
@@ -24,13 +30,13 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	// Create listener
+	// Init listener
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	// Create server
+	// Comp server
 	server := service.NewServer(db)
 	grpcServer := grpc.NewServer()
 	user_proto.RegisterUserServiceServer(grpcServer, server)
