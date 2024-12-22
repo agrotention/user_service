@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Set environment variables
+IMAGE="postgres:14.15-alpine3.21"
+CONTAINER_NAME="postgres_00"
+USER="postgres"
+PASSWORD="secret_password"
+HOST="localhost"
+PORT="5432"
+
+# Check if the container already exists
+container_exists=$(docker container ls -a -q -f name=$CONTAINER_NAME)
+
+if [ -z "$container_exists" ]; then
+    echo "Container does not exist. Creating container..."
+    # Create container if it doesn't exist
+    docker container create \
+        --name $CONTAINER_NAME \
+        -e POSTGRES_USER=$USER \
+        -e POSTGRES_PASSWORD=$PASSWORD \
+        -p $PORT:5432 \
+        $IMAGE
+else
+    echo "Container exists."
+fi
+
+# Check if the container is running
+container_running=$(docker container ls -q -f name=$CONTAINER_NAME)
+
+if [ -z "$container_running" ]; then
+    echo "Container is not running. Starting container..."
+    # Run the container if it's not running
+    docker container start $CONTAINER_NAME
+else
+    echo "Container is already running."
+fi

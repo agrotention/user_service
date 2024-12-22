@@ -10,6 +10,6 @@ type server struct {
 	db *gorm.DB
 }
 
-func NewServer(addr string, db *gorm.DB) *server {
+func NewServer(db *gorm.DB) *server {
 	return &server{db: db}
 }

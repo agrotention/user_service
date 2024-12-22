@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DB_CONTAINER_NAME=postgres_00
+
+docker exec -it $DB_CONTAINER_NAME psql -U postgres
