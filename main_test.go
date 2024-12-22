@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"testing"
-	"time"
 
 	"github.com/agrotention/user_proto"
 	_ "github.com/joho/godotenv/autoload"
@@ -40,7 +39,7 @@ func TestClient(t *testing.T) {
 func TestSuccessRegister(t *testing.T) {
 	// Membuat request registrasi dengan data yang valid
 	request := user_proto.InUserRegister{
-		Username: fmt.Sprintf("testuser-%d", time.Now().UnixNano()),
+		Username: fmt.Sprintf("testuser"),
 		Password: "password123",
 		FullName: "Test User",
 	}
