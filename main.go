@@ -36,5 +36,6 @@ func main() {
 	user_proto.RegisterUserServiceServer(grpcServer, server)
 
 	// Run server
-	grpcServer.Serve(lis)
+	log.Printf("server running on %s", addr)
+	log.Fatal(grpcServer.Serve(lis))
 }

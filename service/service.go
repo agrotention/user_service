@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/agrotention/user_proto"
+	"github.com/agrotention/user_service/db"
 )
 
 func (s *server) UserDelete(
@@ -38,12 +39,29 @@ func (s *server) UserList(
 	return nil, nil
 }
 
+func (s *server) UserLogin(
+	ctx context.Context,
+	req *user_proto.InUserLogin,
+) (*user_proto.OutUserLogin, error) {
+
+	return nil, nil
+}
+
 func (s *server) UserRegister(
 	ctx context.Context,
 	req *user_proto.InUserRegister,
 ) (*user_proto.OutUserRegister, error) {
-
-	return nil, nil
+	newUser := &db.User{
+		Username: req.Username,
+		Password: req.Password,
+		FullName: req.FullName,
+	}
+	if err := s.db.Create(newUser).Error; err != nil {
+		return nil, err
+	}
+	return &user_proto.OutUserRegister{
+		Id: newUser.Id,
+	}, nil
 }
 
 func (s *server) UserUpdate(
