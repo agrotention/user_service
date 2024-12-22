@@ -70,3 +70,12 @@ func (s *server) checkUsernameExists(username string) error {
 	}
 	return nil
 }
+
+// Helper function to check if username already exists
+func (s *server) countId(id string) (int64, error) {
+	var count int64
+	if err := s.db.Model(&db.User{}).Where("id = ?", id).Count(&count).Error; err != nil {
+		return 0, helper.NewServiceError(500, "internal error", err)
+	}
+	return count, nil
+}
