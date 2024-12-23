@@ -13,25 +13,18 @@ func (s *server) UserLogin(
 	ctx context.Context,
 	req *user_proto.InUserLogin,
 ) (*user_proto.OutUserLogin, error) {
+	InvalidUsernameOrPassword := errors.NewServiceError(401, "invalid username or password")
 	if count, err := s.countUsername(req.Username); err != nil {
 		return nil, err
 	} else if count == 0 {
-		return nil, errors.NewServiceError(
-			401,
-			"invalid username or password",
-			"invalid username or password",
-		)
+		return nil, InvalidUsernameOrPassword
 	}
 	var hash string
 	if err := s.db.Model(&db.User{}).Select("password").Find(&hash).Error; err != nil {
-		return nil, errors.NewServiceError(500, "internal error", err)
+		return nil, errors.InternalError
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(req.GetPassword())); err != nil {
-		return nil, errors.NewServiceError(
-			401,
-			"invalid username or password",
-			"invalid username or password",
-		)
+		return nil, InvalidUsernameOrPassword
 	}
 
 	return &user_proto.OutUserLogin{AccessToken: "dummyaccesstoken"}, nil

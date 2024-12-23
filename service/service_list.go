@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"log"
 
 	"github.com/agrotention/user_proto"
 	"github.com/agrotention/user_service/db"
@@ -15,11 +16,13 @@ func (s *server) UserList(
 	var users []db.User
 	if req != nil {
 		if err := s.db.Limit(int(req.Take)).Offset(int(req.Start)).Find(&users); err != nil {
-			return nil, errors.NewServiceError(500, "internal error", err)
+			log.Println(err.Error)
+			return nil, errors.InternalError
 		}
 	} else {
 		if err := s.db.Find(&users); err != nil {
-			return nil, errors.NewServiceError(500, "internal error", err)
+			log.Println(err.Error)
+			return nil, errors.InternalError
 		}
 	}
 	resUsers := make([]*user_proto.OutUserDetail, len(users))

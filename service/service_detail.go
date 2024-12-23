@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"log"
 
 	"github.com/agrotention/user_proto"
 	"github.com/agrotention/user_service/db"
@@ -17,17 +18,14 @@ func (s *server) UserDetail(
 	if count, err := s.countId(req.GetId()); err != nil {
 		return nil, err
 	} else if count == 0 {
-		return nil, errors.NewServiceError(
-			404,
-			"user id not found",
-			"user id not found",
-		)
+		return nil, errors.UserNotFound
 	}
 
 	// Query
 	var user db.User
 	if err := s.db.First(&user, "id = ?", req.GetId()).Error; err != nil {
-		return nil, errors.NewServiceError(500, "internal error", err)
+		log.Println(err)
+		return nil, errors.InternalError
 	}
 
 	return &user_proto.OutUserDetail{

@@ -1,6 +1,9 @@
 package errors
 
-import "log"
+var (
+	InternalError = NewServiceError(500, "internal error")
+	UserNotFound  = NewServiceError(404, "user not found")
+)
 
 type ServiceError struct {
 	httpCode int
@@ -11,7 +14,6 @@ func (e *ServiceError) Error() string {
 	return e.message
 }
 
-func NewServiceError(httpCode int, message string, source ...any) *ServiceError {
-	log.Println(message, source)
+func NewServiceError(httpCode int, message string) *ServiceError {
 	return &ServiceError{httpCode, message}
 }
