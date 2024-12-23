@@ -4,20 +4,20 @@ import (
 	"regexp"
 
 	"github.com/agrotention/user_service/db"
-	"github.com/agrotention/user_service/helper"
+	"github.com/agrotention/user_service/errors"
 )
 
-// Helper function to validate username
+// errors function to validate username
 func (s *server) validateUsername(username string) error {
 	if len(username) < 3 {
-		return helper.NewServiceError(
+		return errors.NewServiceError(
 			400,
 			"username minimum length is 3 characters",
 			"username minimum length is 3 characters",
 		)
 	}
 	if len(username) > 128 {
-		return helper.NewServiceError(
+		return errors.NewServiceError(
 			400,
 			"username maximum length is 128 characters",
 			"username maximum length is 128 characters",
@@ -29,7 +29,7 @@ func (s *server) validateUsername(username string) error {
 func (s *server) validatePassword(password string) error {
 	// Check minimum length
 	if len(password) < 8 {
-		return helper.NewServiceError(
+		return errors.NewServiceError(
 			400,
 			"password minimum length is 8 characters",
 			"password minimum length is 8 characters",
@@ -39,7 +39,7 @@ func (s *server) validatePassword(password string) error {
 	// Check for at least one uppercase letter
 	uppercaseRegex := regexp.MustCompile(`[A-Z]`)
 	if !uppercaseRegex.MatchString(password) {
-		return helper.NewServiceError(
+		return errors.NewServiceError(
 			400,
 			"password must contain at least one uppercase letter",
 			"password must contain at least one uppercase letter",
@@ -49,7 +49,7 @@ func (s *server) validatePassword(password string) error {
 	// Check for at least one number
 	numberRegex := regexp.MustCompile(`[0-9]`)
 	if !numberRegex.MatchString(password) {
-		return helper.NewServiceError(
+		return errors.NewServiceError(
 			400,
 			"password must contain at least one number",
 			"password must contain at least one number",
@@ -59,23 +59,20 @@ func (s *server) validatePassword(password string) error {
 	return nil
 }
 
-// Helper function to check if username already exists
-func (s *server) checkUsernameExists(username string) error {
+// errors function to check if username already exists
+func (s *server) countUsername(username string) (int64, error) {
 	var count int64
 	if err := s.db.Model(&db.User{}).Where("username = ?", username).Count(&count).Error; err != nil {
-		return helper.NewServiceError(500, "internal error", err)
+		return 0, errors.NewServiceError(500, "internal error", err)
 	}
-	if count != 0 {
-		return helper.NewServiceError(409, "username already exists", "username already exists")
-	}
-	return nil
+	return count, nil
 }
 
-// Helper function to check if username already exists
+// errors function to check if username already exists
 func (s *server) countId(id string) (int64, error) {
 	var count int64
 	if err := s.db.Model(&db.User{}).Where("id = ?", id).Count(&count).Error; err != nil {
-		return 0, helper.NewServiceError(500, "internal error", err)
+		return 0, errors.NewServiceError(500, "internal error", err)
 	}
 	return count, nil
 }

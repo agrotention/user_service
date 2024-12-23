@@ -5,7 +5,7 @@ import (
 
 	"github.com/agrotention/user_proto"
 	"github.com/agrotention/user_service/db"
-	"github.com/agrotention/user_service/helper"
+	"github.com/agrotention/user_service/errors"
 )
 
 func (s *server) UserList(
@@ -15,11 +15,11 @@ func (s *server) UserList(
 	var users []db.User
 	if req != nil {
 		if err := s.db.Limit(int(req.Take)).Offset(int(req.Start)).Find(&users); err != nil {
-			return nil, helper.NewServiceError(500, "internal error", err)
+			return nil, errors.NewServiceError(500, "internal error", err)
 		}
 	} else {
 		if err := s.db.Find(&users); err != nil {
-			return nil, helper.NewServiceError(500, "internal error", err)
+			return nil, errors.NewServiceError(500, "internal error", err)
 		}
 	}
 	resUsers := make([]*user_proto.OutUserDetail, len(users))

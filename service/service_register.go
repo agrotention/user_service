@@ -5,6 +5,7 @@ import (
 
 	"github.com/agrotention/user_proto"
 	"github.com/agrotention/user_service/db"
+	"github.com/agrotention/user_service/errors"
 )
 
 func (s *server) UserRegister(
@@ -22,8 +23,10 @@ func (s *server) UserRegister(
 	}
 
 	// Check if username exists
-	if err := s.checkUsernameExists(req.Username); err != nil {
+	if count, err := s.countUsername(req.Username); err != nil {
 		return nil, err
+	} else if count != 0 {
+		return nil, errors.NewServiceError(409, "username already exist", "username already exist")
 	}
 
 	// Create the user

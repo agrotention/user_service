@@ -5,7 +5,7 @@ import (
 
 	"github.com/agrotention/user_proto"
 	"github.com/agrotention/user_service/db"
-	"github.com/agrotention/user_service/helper"
+	"github.com/agrotention/user_service/errors"
 )
 
 func (s *server) UserDetail(
@@ -13,11 +13,11 @@ func (s *server) UserDetail(
 	req *user_proto.InUserDetail,
 ) (*user_proto.OutUserDetail, error) {
 
-	// Check user exist by helper
+	// Check user exist by errors
 	if count, err := s.countId(req.GetId()); err != nil {
 		return nil, err
 	} else if count == 0 {
-		return nil, helper.NewServiceError(
+		return nil, errors.NewServiceError(
 			404,
 			"user id not found",
 			"user id not found",
@@ -27,7 +27,7 @@ func (s *server) UserDetail(
 	// Query
 	var user db.User
 	if err := s.db.First(&user, "id = ?", req.GetId()).Error; err != nil {
-		return nil, helper.NewServiceError(500, "internal error", err)
+		return nil, errors.NewServiceError(500, "internal error", err)
 	}
 
 	return &user_proto.OutUserDetail{
