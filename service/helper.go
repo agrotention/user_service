@@ -4,7 +4,7 @@ import (
 	"regexp"
 
 	"github.com/agrotention/user_service/db"
-	"github.com/agrotention/user_service/errors"
+	"github.com/agrotention/user_service/helper/errors"
 )
 
 // errors function to validate username

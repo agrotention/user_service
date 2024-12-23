@@ -5,7 +5,7 @@ import (
 
 	"github.com/agrotention/user_proto"
 	"github.com/agrotention/user_service/db"
-	"github.com/agrotention/user_service/errors"
+	"github.com/agrotention/user_service/helper/errors"
 )
 
 func (s *server) UserDisable(

@@ -5,7 +5,7 @@ import (
 
 	"github.com/agrotention/user_proto"
 	"github.com/agrotention/user_service/db"
-	"github.com/agrotention/user_service/helper"
+	"github.com/agrotention/user_service/helper/errors"
 )
 
 func (s *server) UserUpdate(
@@ -24,19 +24,19 @@ func (s *server) UserUpdate(
 	if count, err := s.countId(user.Id); err != nil {
 		return nil, err
 	} else if count == 0 {
-		return nil, helper.NewServiceError(404, "user id not found", "user id not found")
+		return nil, errors.NewServiceError(404, "user id not found", "user id not found")
 	}
 
 	// Check unique user
 	if count, err := s.countUsername(req.Username); err != nil {
 		return nil, err
 	} else if count != 0 {
-		return nil, helper.NewServiceError(409, "username already exist", "username already exist")
+		return nil, errors.NewServiceError(409, "username already exist", "username already exist")
 	}
 
 	// Query
 	if err := s.db.Model(&db.User{}).Where("id = 1", user.Id).Updates(user).Error; err != nil {
-		return nil, helper.NewServiceError(500, "internal error", "internal error")
+		return nil, errors.NewServiceError(500, "internal error", "internal error")
 	}
 
 	return &user_proto.OutUserUpdate{
