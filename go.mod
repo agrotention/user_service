@@ -3,7 +3,7 @@ module github.com/agrotention/user_service
 go 1.23.4
 
 require (
-	github.com/agrotention/user_proto v0.0.0-20241222152505-8c84556be8c7
+	github.com/agrotention/user_proto v0.0.0-20241223044840-3e35084df4bd
 	github.com/google/uuid v1.6.0
 	golang.org/x/crypto v0.31.0
 	gorm.io/driver/postgres v1.5.11
@@ -20,6 +20,7 @@ require (
 )
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
